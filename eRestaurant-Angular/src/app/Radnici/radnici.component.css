@@ -1,0 +1,345 @@
+*{
+  outline:none;
+}
+input:focus, textarea:focus, select:focus{
+  box-shadow: #D2988D 0px 0px 3px 3px;
+}
+button:focus{
+  outline: none;
+}
+body{
+  background-color: #FAFAFA;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.upper{
+  display: flex;
+  width: 100%;
+  margin-top: -40px;
+  margin-bottom: 40px;
+}
+.search{
+  display: flex;
+  width: 100%;
+  border: 1px solid #707070;
+  border-radius: 15px;
+  padding-left: 10px;
+  align-items: center;
+  height: 40px;
+  justify-content: space-between;
+}
+.settings{
+  display: flex;
+  padding-left: 20px;
+  padding-right: 20px;
+  width: 30%;
+  color: #707070;
+  justify-content: right;
+  font-size: 23px;
+}
+.settings i:hover{
+  cursor: pointer;
+}
+.settings i{
+  margin-left: 20px;
+}
+.searchIcon{
+  margin-left:-35px;
+}
+.radnikDiv{
+  background-color: #ffffff;
+  border: 1px solid #707070;
+  border-radius:4px;
+  width:31%;
+  height:auto;
+  display: flex;
+  flex-direction: column;
+  margin-right:20px;
+  margin-bottom:20px;
+  justify-content: space-between;
+}
+.addEmployee{
+  display: flex;
+}
+.addEmployeeIcon{
+  background-color: #DBA080;
+  width:fit-content;
+  border-radius: 20px;
+  padding:10px;
+  display: flex;
+  justify-content: center;
+  margin-bottom:0px;
+  margin-left:10px;
+  height:100%;
+  cursor: pointer;
+}
+.addEmployeeIcon img{
+  width:80%;
+  display: flex;
+}
+.addEmployee p{
+  font-size: 20px;
+}
+.radnikImg{
+  width:100%;
+  border-radius: 4px;
+}
+.radnikInfo{
+  display: flex;
+  flex-direction: column;
+  color: #434343;
+  margin-top:10px;
+}
+.radnikInfo label{
+  margin-bottom:0px;
+  margin-top:0px;
+  margin-left:10px;
+}
+.employeeName{
+  font-size:22px;
+  font-weight: bold;
+}
+.employeePosition{
+  font-size:15px;
+}
+.employeeEmail{
+  font-size:15px;
+}
+.employeePhoneNumber{
+  font-size:15px;
+}
+.mainpart{
+  display: flex;
+  flex-direction: row;
+  flex-wrap:wrap;
+}
+.timeActive_Edit{
+  display: flex;
+  justify-content: space-between;
+  margin-top:40px;
+}
+.timeActive{
+  margin-left:10px;
+}
+.radnikEditBtn{
+  display: flex;
+  margin-right:10px;
+  background-color: #DBA080;
+  width:30%;
+  height:fit-content;
+  border-radius: 4px;
+  justify-content: center;
+  font-size:17px;
+  color:white;
+  font-weight: bold;
+  margin-top:-7px;
+  cursor: pointer;
+}
+.addEmployeePrompt{
+  display:flex;
+  flex-direction: column;
+  background-color: #FAFAFA;
+  width:30%;
+  height:fit-content;
+  position:fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid #707070;
+  padding:20px;
+  border-radius: 4px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.addEmployeePrompt label{
+  margin-top:5px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.addEmployeePrompt input{
+  border-radius:4px;
+  border: 0px solid #707070;
+  margin-top:-8px;
+  background-color: #D9D9D9;
+  height:32px;
+}
+.side select{
+  border: 1px solid #707070;
+  margin-top: -8px;
+}
+.employeeImgDiv{
+  background-color: #D9D9D9;
+  display: flex;
+  width:100%;
+  height: 100%;
+  align-self: center;
+  border-radius: 4px;
+}
+.employeeImgDiv{
+  display: flex;
+  align-self: center;
+}
+.defaultImg{
+  width:50%;
+  height: 50%;
+  margin:auto;
+  display: flex;
+  object-fit: scale-down;
+}
+.employeeImgDiv{
+  display: flex;
+  width:100%;
+  height: 100%;
+  border-radius: 4px;
+  object-fit: cover;
+}
+.addEmployeePromptButtons{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 18px;
+}
+.cancelBtn, .backBtn{
+  background-color: #E7EBE6;
+  border-radius: 4px;
+  border: 1px solid rgba(112, 112, 112, 0.5) ;
+  width:84px;
+  height:30px;
+  cursor: pointer;
+}
+.nextBtn, .addBtn{
+  background-color: #DBA080;
+  border-radius: 4px;
+  color: white;
+  font-weight: 500;
+  border: none;
+  width:84px;
+  height:30px;
+  cursor: pointer;
+}
+#bg{
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: black;
+  opacity: 50%;
+  display: none;
+}
+.prompt{
+  display:flex;
+  flex-direction: column;
+  width: fit-content;
+  border: 1px solid #707070;
+  border-radius: 4px;
+  background-color: #FAFAFA;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  width:379px;
+  height:220px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.promptImg_label{
+  display:flex;
+  flex-direction: column;
+}
+.promptImg{
+  width: 20%;
+  height: auto;
+  align-self: center;
+  margin: 15px;
+}
+.prompt label{
+  width: 65%;
+  text-align: center;
+  align-self: center;
+}
+.OkBtn{
+  background-color: #DBA080;
+  border-radius: 4px;
+  color: white;
+  font-weight: 500;
+  border: none;
+  width:84px;
+  height:30px;
+  justify-self: center;
+  cursor: pointer;
+}
+.OkButton{
+  display:flex;
+  justify-content: center;
+  margin-top: 42px;
+}
+.deleteLabel{
+  color:#A45050;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 13px;
+  margin-top:3px;
+  margin-bottom:0;
+}
+.prompt{
+  display:flex;
+  flex-direction: column;
+  width: fit-content;
+  border: 1px solid #707070;
+  border-radius: 4px;
+  background-color: #FAFAFA;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  width:379px;
+  height:220px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.promptImg_label{
+  display:flex;
+  flex-direction: column;
+}
+.promptImg{
+  width: 20%;
+  height: auto;
+  align-self: center;
+  margin: 15px;
+}
+.prompt label{
+  width: 65%;
+  text-align: center;
+  align-self: center;
+}
+.YesNoButtons{
+  display:flex;
+  justify-content: space-between;
+  margin-top: 18px;
+}
+.YesBtn{
+  background-color: #DBA080;
+  border-radius: 4px;
+  color: white;
+  font-weight: 500;
+  border: none;
+  width:84px;
+  height:30px;
+  margin-right: 20px;
+  cursor: pointer;
+}
+.NoBtn{
+  background-color: #E7EBE6;
+  border-radius: 4px;
+  border: 1px solid rgba(112, 112, 112, 0.5) ;
+  width:84px;
+  height:30px;
+  margin-left: 20px;
+  cursor: pointer;
+}
+.errorMessage{
+  color:#A45050;
+  background-color: #FFCACB;
+  display: flex;
+  justify-content: center;
+  border-radius: 100px;
+  font-size: 15px;
+}

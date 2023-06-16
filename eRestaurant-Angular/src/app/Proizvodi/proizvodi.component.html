@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+<div class="upper">
+  <input class="search" placeholder="Search..." [(ngModel)]="search_by_name" (change)="preuzmi_proizvode()">
+  <img class="searchIcon" src="assets\Resources\search.svg">
+<div class="settings">
+ <i class="fa fa-bell" aria-hidden="true" style="margin-top: 10px"></i>
+ <i class="fa fa-cog" aria-hidden="true" style="margin-top: 10px"></i>
+ <i class="fa fa-user-circle" aria-hidden="true" style="margin-top: 10px"></i>
+</div>
+</div>
+<div class="categories">
+
+<div class="category" style="margin-right: 40px; background-color: #B88E76; font-weight: bold;" (click)="preuzmi_proizvode(0)">
+ <p style="color:white;">All</p>
+</div>
+
+<div class="category" (click)="preuzmi_proizvode(1)">
+ <img class="categoryIcon" src="assets\Resources\cheers.png">
+    <p>Drinks</p>
+  </div>
+
+  <div class="category" (click)="preuzmi_proizvode(2)">
+    <img class="categoryIcon" src="assets\Resources\pizza.png">
+    <p>Pizzas</p>
+  </div>
+
+  <div class="category" (click)="preuzmi_proizvode(3)">
+    <img class="categoryIcon" src="assets\Resources\cupcake.png">
+    <p>Desserts</p>
+  </div>
+
+  <div class="category" (click)="preuzmi_proizvode(4)">
+    <img class="categoryIcon" src="assets\Resources\sandwich.png">
+    <p>Sandwiches</p>
+  </div>
+
+  <div class="category" (click)="preuzmi_proizvode(5)">
+    <img class="categoryIcon" src="assets\Resources\spaghetti.png">
+    <p>Pastas</p>
+  </div>
+
+</div>
+
+<div class="main">
+  <div class="mainpart">
+    <div class="product" *ngFor="let x of proizvodi_podaci">
+      <div class="divImg">
+        <img class="productImg" alt="Product" src="{{get_slika(x)}}">
+      </div>
+      <div class="ProductInfo">
+        <label class="productName">{{x.nazivProizvoda}}</label>
+        <label class="price">$ {{x.pocetnaCijena}}</label>
+        <div id="starRating">
+          <a id="recenzijaBroj"> {{x.recenzija}} </a>
+          <img id="star" alt="Star rating" src="assets\Resources\star1.png">
+        </div>
+        <div id="jedinicaMjere">
+          <a id="jedinicaMjereTekst"> {{x.jedinicaMjere}} g/ml</a>
+        </div>
+      </div>
+
+      <div class = "EditIcons">
+        <i id="EditIcon" class="fa fa-pencil-square-o" aria-hidden="true" (click)="odaberi_proizvod(x);previewActivated=false;scrollUp()"></i>
+        <i id="DeleteIcon" class="fa fa-trash-o" aria-hidden="true" (click)="proizvod_za_delete=x; deleteActivated=true; promptBg(true)"></i>
+      </div>
+    </div>
+  </div>
+  <div class="side" *ngIf="odabrani_proizvod==null">
+    <div class="selectedProductImg">
+       <img *ngIf="novi_proizvod.slikaNovaBase64=='' && previewActivated==false" class="defaultImg" alt="ProductDefaultImg" src="assets\Resources\image.svg">
+      <img *ngIf="previewActivated==true" class="selectedImg" alt="Product" src="{{slikaBase64string}}">
+    </div>
+    <input type="file" id="newImageInputID" class="imageUpload" accept="image/png" (change)="generisiPreviewZaNoviProizvod();previewActivated=true">
+    <label>Name of product:</label>
+    <input (click)="isChangedName=true" type="text" required maxlength="24" [(ngModel)]="novi_proizvod.nazivProizvoda">
+    <div *ngIf="isChangedName==true && novi_proizvod.nazivProizvoda==''" class="errorMessage">Product name cannot be empty.</div>
+    <label>Price:</label>
+    <input (click)="isChangedPrice=true" type="number" required [(ngModel)]="novi_proizvod.pocetnaCijena">
+    <div *ngIf="isChangedPrice==true && (novi_proizvod.pocetnaCijena<=0 || novi_proizvod.pocetnaCijena==null)" class="errorMessage">Price cannot be less or equal to zero, nor empty.</div>
+    <label>Measurement unit:</label>
+    <input (click)="isChangedUnit=true" type="number" required [(ngModel)]="novi_proizvod.jedinicaMjere">
+    <div *ngIf="isChangedUnit==true && (novi_proizvod.jedinicaMjere<=0 || novi_proizvod.jedinicaMjere==null)" class="errorMessage">Measurement unit cannot be less or equal to zero, nor empty.</div>
+    <label>Category:</label>
+    <select class="form-control" [(ngModel)]="novi_proizvod.proizvodiKategorijeID">
+      <option *ngFor="let x of kategorijePodaci" [value]="x.proizvodiKategorijeID">{{x.nazivKategorije}}</option>
+    </select>
+    <label>Description:</label>
+    <textarea required [(ngModel)]="novi_proizvod.opis"></textarea>
+    <button class="submitButton" type="submit" [disabled]="novi_proizvod.nazivProizvoda=='' || novi_proizvod.pocetnaCijena<=0 || novi_proizvod.jedinicaMjere<=0 || novi_proizvod.pocetnaCijena==null || novi_proizvod.jedinicaMjere==null" (click)="Add(); newProductAdded=true; promptBg(true)">Add product</button>
+  </div>
+
+  <div class="side" *ngIf="odabrani_proizvod!=null">
+    <div class="selectedProductImg">
+      <img *ngIf="odabrani_proizvod.slikaNovaBase64!='' && previewActivated==false" id="slikaPreview" class="selectedImg" alt="Product" src="{{get_slika(odabrani_proizvod)}}">
+      <img *ngIf="odabrani_proizvod.slikaNovaBase64!='' && previewActivated==true" class="selectedImg" alt="Product" src="{{slikaBase64string}}">
+    </div>
+    <input type="file" id="existingImageInputID" class="imageUpload" accept="image/png" (change)="generisiPreviewZaPostojeciProizvod();previewActivated=true">
+    <label>Name of product:</label>
+    <input (click)="isChangedName=true" type="text" required maxlength="24" [(ngModel)]="odabrani_proizvod.nazivProizvoda">
+    <div *ngIf="isChangedName==true && odabrani_proizvod.nazivProizvoda==''" class="errorMessage">Product name cannot be empty.</div>
+    <label>Price:</label>
+    <input (click)="isChangedPrice=true" type="number" required [(ngModel)]="odabrani_proizvod.pocetnaCijena">
+    <div *ngIf="isChangedPrice==true && (odabrani_proizvod.pocetnaCijena<=0 || odabrani_proizvod.pocetnaCijena==null)" class="errorMessage">Price cannot be less or equal to zero, nor empty.</div>
+    <label>Measurement unit:</label>
+    <input (click)="isChangedUnit=true" type="number" required [(ngModel)]="odabrani_proizvod.jedinicaMjere">
+    <div *ngIf="isChangedUnit==true && (odabrani_proizvod.jedinicaMjere<=0 || odabrani_proizvod.jedinicaMjere==null)" class="errorMessage">Measurement unit cannot be less or equal to zero, nor empty.</div>
+    <label>Category:</label>
+    <select class="form-control" [(ngModel)]="odabrani_proizvod.proizvodiKategorijeID">
+      <option *ngFor="let x of kategorijePodaci" [value]="x.proizvodiKategorijeID">{{x.nazivKategorije}}</option>
+    </select>
+    <label>Description:</label>
+    <textarea required [(ngModel)]="odabrani_proizvod.opis"></textarea>
+    <p id="addNewProductLabel" (click)="
+   novi_proizvod.nazivProizvoda='';
+   novi_proizvod.pocetnaCijena=0;
+   novi_proizvod.opis='';
+   novi_proizvod.recenzija=0;
+   novi_proizvod.slikaNovaBase64='';
+   novi_proizvod.jedinicaMjere=0;
+   novi_proizvod.proizvodiKategorijeID=1;
+   odabrani_proizvod=null;
+   previewActivated=false">Add new product</p>
+    <button class="submitButton" type="submit" [disabled]="odabrani_proizvod.nazivProizvoda=='' || odabrani_proizvod.pocetnaCijena<=0 || odabrani_proizvod.jedinicaMjere<=0 || odabrani_proizvod.pocetnaCijena==null || odabrani_proizvod.jedinicaMjere==null" (click)="Update();promptBg(true);">Save</button>
+  </div>
+
+</div>
+
+<div id="bg"></div>
+
+<div class="prompt"  *ngIf="deleteActivated==true">
+  <div class="promptImg_label">
+    <img class="promptImg" src="assets\Resources\alert-triangle.svg">
+    <label>Are you sure you want to delete this product?</label>
+  </div>
+  <div class="YesNoButtons">
+    <button class="NoBtn" (click)="deleteActivated=false;promptBg(false)">No</button>
+    <button class="YesBtn" (click)="Delete(); deleteActivated=false;promptBg(false)">Yes</button>
+  </div>
+</div>
+
+<div class="prompt" *ngIf="newProductAdded==true" >
+  <div class="promptImg_label">
+    <img class="promptImg" src="assets\Resources\check-mark.svg">
+    <label>A new product has been added!</label>
+  </div>
+  <div class="OkButton">
+    <button class="OkBtn" (click)="newProductAdded=false;promptBg(false)">Ok</button>
+  </div>
+</div>
+
+<div class="prompt" *ngIf="productEdited==true" >
+  <div class="promptImg_label">
+    <img class="promptImg" src="assets\Resources\check-mark.svg">
+    <label>Product info has been saved!</label>
+  </div>
+  <div class="OkButton">
+    <button class="OkBtn" (click)="productEdited=false;promptBg(false);reloadPage()">Ok</button>
+  </div>
+</div>
+
+
+
+
+</body>
+</html>
+

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.3/leaflet.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.3/leaflet.js"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-routing-machine/3.2.12/leaflet-routing-machine.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-routing-machine/3.2.12/leaflet-routing-machine.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.fullscreen/2.4.0/Control.FullScreen.min.js"></script>
+
+</head>
+<body>
+
+
+<div class="upper">
+  <input class="search" placeholder="Search..." [(ngModel)]="search_term" (change)="preuzmi_narudzbe()">
+  <img class="searchIcon" src="assets\Resources\search.svg">
+  <div class="settings">
+    <i class="fa fa-bell" aria-hidden="true" style="margin-top: 10px"></i>
+    <i class="fa fa-cog" aria-hidden="true" style="margin-top: 10px"></i>
+    <i class="fa fa-user-circle" aria-hidden="true" style="margin-top: 10px"></i>
+  </div>
+</div>
+<div class="categories">
+
+  <div class="category" style="margin-right: 40px; background-color: #B88E76; font-weight: bold;" (click)="preuzmi_narudzbe()">
+    <p style="color:white;">All</p>
+  </div>
+
+  <div class="category" (click)="preuzmi_narudzbe('Active')">
+    <img class="categoryIcon" src="assets\Resources\delivery.svg">
+    <p>Active</p>
+  </div>
+
+  <div class="category"  (click)="preuzmi_narudzbe('Delivered')">
+    <img class="categoryIcon" src="assets\Resources\circle-checked.svg">
+    <p>Delivered</p>
+  </div>
+</div>
+
+<div class="main">
+  <div class="mainpart">
+
+    <div class="order" *ngFor="let x of narudzbePodaci" (click)="get_narudzba_info(x.narudzbaID);showRoute()">
+
+      <div class="orderLeftDiv">
+      <div class="divImg">
+        <img class="orderImg" alt="Order" src="assets\Resources\deliveryOrderDefaultImg.svg">
+      </div>
+      <div class="orderInfo">
+
+        <label class="orderID">Order #{{x.narudzbaID}}</label>
+        <label class="user">{{x.korisnik.osoba.ime+" "+x.korisnik.osoba.prezime}}</label>
+        <label class="dateOrdered">{{formatdate(x.datumNarudzbe)}}</label>
+      </div>
+      </div>
+
+      <select id="orderStatus" class="orderStatus" [(ngModel)]="x.statusNarudzbe" (change)="change_order_status(x);">
+        <option hidden class="orderStatusOption">{{x.statusNarudzbe}}</option>
+        <option class="orderStatusOption">Is being delivered</option>
+        <option class="orderStatusOption">Delivered</option>
+      </select>
+
+    </div>
+  </div>
+
+
+
+  <div class="side">
+
+    <div class="mapImg">
+      <div id="map" style="height: 600px; width: 100%;"></div>
+    </div>
+
+    <div *ngIf="narudzbaInfoPodaci==null" class="selectedOrderInfo">
+
+      <label class="selectedOrderID">Order number</label> <br>
+      <img src="assets\Resources\pin.svg"><label class="selectedInfoLabel">Order address</label> <br>
+      <img src="assets\Resources\Dollar.svg"><label class="selectedInfoLabel">Total cost</label> <br>
+      <img src="assets\Resources\creditcard.svg"><label class="selectedInfoLabel">Payment type</label> <br>
+      <img src="assets\Resources\comment-text.svg"><label class="selectedInfoLabel">Message from the customer</label> <br>
+      <img src="assets\Resources\Cart 2.svg"><label class="selectedInfoLabel">Order details</label>
+
+    </div>
+
+    <div *ngIf="narudzbaInfoPodaci!=null" class="selectedOrderInfo">
+
+      <label class="selectedOrderID">Order number: {{this.narudzbaInfoPodaci.orderID}}</label> <br>
+      <img src="assets\Resources\pin.svg"><label class="selectedInfoLabel">{{this.narudzbaInfoPodaci.orderAddress}}</label> <br>
+      <img src="assets\Resources\Dollar.svg"><label class="selectedInfoLabel">{{this.narudzbaInfoPodaci.totalCost}}</label> <br>
+      <img src="assets\Resources\creditcard.svg"><label class="selectedInfoLabel">{{this.narudzbaInfoPodaci.paymentType}}</label> <br>
+      <img src="assets\Resources\comment-text.svg"><label class="selectedInfoLabel">{{this.narudzbaInfoPodaci.message}}</label> <br>
+      <img src="assets\Resources\Cart 2.svg"><label class="selectedInfoLabel">{{this.narudzbaInfoPodaci.orderDetails}}</label>
+
+    </div>
+  </div>
+
+</div>
+
+
+
+</body>
+</html>

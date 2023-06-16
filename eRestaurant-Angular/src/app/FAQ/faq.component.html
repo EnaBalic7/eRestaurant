@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+
+<div class="upper">
+  <input class="search" placeholder="Search..." [(ngModel)]="search_term" (change)="preuzmi_pitanja()">
+  <img class="searchIcon" src="assets\Resources\search.svg">
+  <div class="settings">
+    <i class="fa fa-bell" aria-hidden="true" style="margin-top: 10px"></i>
+    <i class="fa fa-cog" aria-hidden="true" style="margin-top: 10px"></i>
+    <i class="fa fa-user-circle" aria-hidden="true" style="margin-top: 10px"></i>
+  </div>
+</div>
+<div class="categories">
+
+  <div class="category" style="margin-right: 40px; background-color: #B88E76; font-weight: bold;" (click)="preuzmi_pitanja()">
+    <p style="color:white;">All</p>
+  </div>
+
+  <div class="category" (click)="preuzmi_pitanja('Answered')">
+    <img class="categoryIcon" src="assets\Resources\comment-checked.svg">
+    <p>Answered</p>
+  </div>
+
+  <div class="category"  (click)="preuzmi_pitanja('Unanswered')">
+    <img class="categoryIcon" src="assets\Resources\comment.svg">
+    <p>Unanswered</p>
+  </div>
+</div>
+
+
+<div class="main">
+  <div class="mainpart">
+
+    <div class="question" *ngFor="let x of pitanjaPodaci" (click)="odabrano_pitanje=x;scrollUp()">
+
+      <div class="questionLeftDiv">
+        <div class="divImg">
+          <img class="questionImg" alt="Question" src="assets\Resources\FAQdefaultImg.svg">
+        </div>
+
+        <div class="questionInfo">
+          <label class="questionDesc">{{x.opis}}</label>
+          <label class="user">{{x.korisnik.osoba.ime+" "+x.korisnik.osoba.prezime}}</label>
+          <label class="dateSubmitted">Date submitted: {{formatdate(x.datum)}}</label>
+        </div>
+      </div>
+
+      <div class="questionRightDiv">
+        <div *ngIf="x.odgovor!=''" class="answeredTag">Answered</div>
+        <div *ngIf="x.odgovor==''" class="unansweredTag">Unanswered</div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <div class="side" *ngIf="odabrano_pitanje==null">
+
+    <label>Selected question will appear here.</label>
+    <textarea disabled placeholder="Write your answer here.."></textarea>
+
+    <button disabled class="submitButton" type="submit">Answer</button>
+  </div>
+
+  <div class="side" *ngIf="odabrano_pitanje!=null">
+
+    <label>{{odabrano_pitanje.opis}}</label>
+    <textarea placeholder="Write your answer here.." [(ngModel)]="odabrano_pitanje.odgovor"></textarea>
+
+    <button class="submitButton" type="submit" (click)="answer()">Answer</button>
+  </div>
+
+  <div id="bg"></div>
+
+  <div class="prompt" *ngIf="answered==true" >
+    <div class="promptImg_label">
+      <img class="promptImg" src="assets\Resources\check-mark.svg">
+      <label>Answer saved!</label>
+    </div>
+    <div class="OkButton">
+      <button class="OkBtn" (click)="answered=false;promptBg(false)">Ok</button>
+    </div>
+  </div>
+
+
+
+</div>
+
+
+</body>
+</html>

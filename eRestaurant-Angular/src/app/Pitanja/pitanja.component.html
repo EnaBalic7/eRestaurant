@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+<div class="upper">
+  <input class="search" placeholder="Search...">
+  <img class="searchIcon" src="assets\Resources\search.svg">
+  <div class="settings">
+    <i class="fa fa-bell" aria-hidden="true" style="margin-top: 10px"></i>
+    <i class="fa fa-cog" aria-hidden="true" style="margin-top: 10px"></i>
+    <i class="fa fa-user-circle" aria-hidden="true" style="margin-top: 10px"></i>
+  </div>
+</div>
+
+<div class="categories">
+
+  <div class="category" style="margin-right: 40px; background-color: #B88E76; font-weight: bold;">
+    <p>All</p>
+  </div>
+
+  <div class="category">
+    <p>Answered</p>
+  </div>
+
+  <div class="category">
+    <p>Unanswered</p>
+  </div>
+
+</div>
+
+<div class="main">
+  <div class="mainpart">
+    <h4 style="margin-bottom: 20px;color: #707070">All questions</h4>
+    <div class="pitanja" *ngFor="let x of getpodaci()">
+      <div class="leftPart">
+        <div class="picture">
+          <img src="assets/questionpicture.png" style="width: 100px;height: 90px">
+        </div>
+        <div class="text">
+          <h4 style="font-weight: bold">Question: {{x.opis}} </h4>
+          <p style="font-weight: bold">Answer:{{x.odgovor}} </p>
+          <p>Date: {{x.datum}}</p>
+        </div>
+      </div>
+      <div class="button">
+        <i id="delete" style="color: red" class="fa fa-trash-o" aria-hidden="true" (click)="Delete(x)"></i>
+        <button class="insidebutton" (click)="odabrano_pitanje=x">Update</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="side">
+    <div class="cpitanje" *ngIf="novo_pitanje!=null">
+      <h4 style="text-align: center;color: #707070">Ask a question</h4>
+      <label>Question: </label>
+      <textarea [(ngModel)]="novo_pitanje.opis"></textarea>
+      <input type="submit" id="create" value="Create question" style="height: 40px;padding: 0" (click)="Add()">
+    </div>
+
+    <div class="cpitanje" *ngIf="odabrano_pitanje.id!=null">
+      <h4 style="text-align: center;color: #707070">Update a question</h4>
+      <label>Id</label>
+      <input [(ngModel)]="odabrano_pitanje.id" disabled>
+      <label>Date:</label>
+      <input [(ngModel)]="odabrano_pitanje.datum" value="2022-11-25">
+      <label>Question text:</label>
+      <textarea [(ngModel)]="odabrano_pitanje.opis"></textarea>
+      <button class="submit" (click)="Update(odabrano_pitanje.id)">Update</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>

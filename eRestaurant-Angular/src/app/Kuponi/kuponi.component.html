@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+
+<div class="upper">
+  <input class="search" placeholder="Search..." [(ngModel)]="search_by_discount" (change)="preuzmi_kupone()">
+  <img class="searchIcon" src="assets\Resources\search.svg">
+  <div class="settings">
+    <i class="fa fa-bell" aria-hidden="true" style="margin-top: 10px"></i>
+    <i class="fa fa-cog" aria-hidden="true" style="margin-top: 10px"></i>
+    <i class="fa fa-user-circle" aria-hidden="true" style="margin-top: 10px"></i>
+  </div>
+</div>
+<div class="categories">
+
+  <div class="category" style="margin-right: 40px; background-color: #B88E76; font-weight: bold;" (click)="preuzmi_kupone()">
+    <p style="color:white;">All</p>
+  </div>
+
+  <div class="category" (click)="preuzmi_kupone('Active')">
+    <img class="categoryIcon" src="assets\Resources\coupon.svg">
+    <p>Active</p>
+  </div>
+
+  <div class="category"  (click)="preuzmi_kupone('Expired')">
+    <img class="categoryIcon" src="assets\Resources\time.svg">
+    <p>Expired</p>
+  </div>
+</div>
+
+
+<div class="main">
+  <div class="mainpart">
+
+    <div class="coupon" *ngFor="let x of kuponiPodaci" (click)="odaberiKupon(x);scrollUp()">
+
+      <div class="couponLeftDiv">
+        <div class="divImg">
+          <img class="couponImg" alt="Coupon" src="assets\Resources\couponImg.svg">
+        </div>
+
+        <div class="couponInfo" (load)="datumDeakt=x.datumDeaktivacije">
+            <label class="discount">Discount: {{x.popust}}%</label>
+            <label class="couponID">Coupon #{{x.kuponID}}</label>
+            <label class="activeUntil">Active until: {{formatdate(x.datumDeaktivacije)}}</label>
+        </div>
+      </div>
+
+      <div class="couponRightDiv">
+        <div *ngIf="x.deaktiviran==false" class="activeTag">Active</div>
+        <div *ngIf="x.deaktiviran" class="expiredTag">Expired</div>
+      </div>
+
+
+    </div>
+
+  </div>
+
+  <div class="side" *ngIf="odabrani_kupon==null">
+    <div class="couponImgDiv">
+      <img class="defaultImg" alt="CouponDefaultImg" src="assets\Resources\couponImg.svg">
+    </div>
+    <label>Discount:</label>
+    <input required type="number" [(ngModel)]="noviKuponObj.popust">
+    <div *ngIf="noviKuponObj.popust<=0" class="errorMessage">Discount cannot be less or equal to zero.</div>
+    <label>Date of activation:</label>
+    <input disabled type="date" [(ngModel)]="noviKuponObj.datumAktivacije">
+    <label>Active until:</label>
+    <input (click)="isChangedActiveUntil=true" required type="date" [(ngModel)]="noviKuponObj.datumDeaktivacije">
+    <div *ngIf="noviKuponObj.datumDeaktivacije==''" class="errorMessage">Coupon expiration date cannot be empty.</div>
+    <button class="submitButton" type="submit" [disabled]="noviKuponObj.popust<=0 || noviKuponObj.datumDeaktivacije==''" (click)="addKupon()">Activate</button>
+
+  </div>
+
+  <div class="side" *ngIf="odabrani_kupon!=null">
+    <div class="couponImgDiv">
+      <img class="defaultImg" alt="CouponDefaultImg" src="assets\Resources\couponImg.svg">
+    </div>
+    <img class="circleX" src="assets\Resources\circleX.svg" (click)="odabrani_kupon=null">
+    <label>Discount:</label>
+    <input disabled type="number" [(ngModel)]="odabrani_kupon.popust">
+    <label>Date of activation:</label>
+    <input disabled type="date" [(ngModel)]="odabrani_kupon.datumAktivacije">
+    <label>Active until:</label>
+    <input (click)="isChangedActiveUntil=true" required type="date" [(ngModel)]="odabrani_kupon.datumDeaktivacije">
+    <div *ngIf="odabrani_kupon.datumDeaktivacije==''" class="errorMessage">Coupon expiration date cannot be empty.</div>
+    <p class="deleteLabel" (click)="deleteActivated=true;promptBg(true)">Delete coupon</p>
+    <button class="submitButtonEdit" type="submit" [disabled]="odabrani_kupon.datumDeaktivacije==''" (click)="updateKupon()">Save</button>
+  </div>
+
+</div>
+
+<div id="bg"></div>
+
+<div class="prompt" *ngIf="kuponAdded==true" >
+  <div class="promptImg_label">
+    <img class="promptImg" src="assets\Resources\check-mark.svg">
+    <label>Coupon has been activated!</label>
+  </div>
+  <div class="OkButton">
+    <button class="OkBtn" (click)="kuponAdded=false;promptBg(false)">Ok</button>
+  </div>
+</div>
+
+<div class="prompt" *ngIf="kuponUpdated==true" >
+  <div class="promptImg_label">
+    <img class="promptImg" src="assets\Resources\check-mark.svg">
+    <label>Coupon validity extended!</label>
+  </div>
+  <div class="OkButton">
+    <button class="OkBtn" (click)="kuponUpdated=false;promptBg(false)">Ok</button>
+  </div>
+</div>
+
+<div class="prompt"  *ngIf="deleteActivated==true">
+  <div class="promptImg_label">
+    <img class="promptImg" src="assets\Resources\alert-triangle.svg">
+    <label>Are you sure you want to delete this coupon?</label>
+  </div>
+  <div class="YesNoButtons">
+    <button class="NoBtn" (click)="deleteActivated=false;promptBg(false)">No</button>
+    <button class="YesBtn" (click)="deleteCoupon();promptBg(false); deleteActivated=false">Yes</button>
+  </div>
+</div>
+
+
+
+</body>
+</html>

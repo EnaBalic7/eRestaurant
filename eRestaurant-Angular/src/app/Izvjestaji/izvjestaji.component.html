@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+
+<div class="upper">
+  <input type="date" class="search" [(ngModel)]="search_date" (change)="preuzmi_izvjestaje()">__
+  <input type="date" class="search" [(ngModel)]="search_date2" (change)="preuzmi_izvjestaje()">
+  <div class="settings">
+    <i class="fa fa-bell" aria-hidden="true" style="margin-top: 10px"></i>
+    <i class="fa fa-cog" aria-hidden="true" style="margin-top: 10px"></i>
+    <i class="fa fa-user-circle" aria-hidden="true" style="margin-top: 10px"></i>
+  </div>
+</div>
+
+
+<div class="main">
+  <div class="mainpart">
+    <div class="report" *ngFor="let x of izvjestajiPodaci">
+      <div class="divImg">
+        <img class="reportImg" alt="Report" src="assets\Resources\salesReportDefaultImg.svg">
+      </div>
+      <div class="reportInfo" *ngFor="let y of x;let isFirst=first">
+        <label class="reportDate" *ngIf="isFirst">{{formatdate(y.datumNarudzbe)}}</label>
+      </div>
+
+      <div class = "DetailsButtonDiv">
+        <button class="detailsBtn" (click)="odaberi_izvjestaj(x);scrollUp()">See details</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="side" *ngIf="odabrani_izvjestaj!=null">
+    <label style="font-weight: bold;font-size:18px">Date: {{formatdate(odabrani_izvjestaj[0].datumNarudzbe)}}</label>
+    <div class="sideReportInfo" *ngFor="let x of odabrani_izvjestaj; let isFirst=first">
+      <label *ngIf="isFirst">Total income: <label style="font-weight: bold">{{x.ukupnaZarada}} $</label></label>
+      <label>Order #{{x.narudzbaID}}: <label style="margin-left: 7px">{{x.ukupnaCijenaSaPDV}} $</label></label>
+      </div>
+  </div>
+
+</div>
+
+</body>
+</html>

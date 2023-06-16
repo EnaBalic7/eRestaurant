@@ -1,0 +1,126 @@
+<head>
+   <!-- icons-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- bootstrap  -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
+
+<body>
+ <div class="menu">
+   <!--  <i class="fa fa-bars" aria-hidden="true" style="color: white;margin-left: 20px" ></i> -->
+
+  <div class="nav">
+
+    <img class="logo" src="assets\Resources\gatesOfOrientLogo.svg">
+
+   <!-- <div class="navitem">
+      <div class="icon">
+        <i class="fa fa-file-text" aria-hidden="true" style="margin-top: 10px"></i>
+      </div>
+      <p class="navp">OVERVIEW</p>
+    </div> -->
+
+    <div class="navitem" routerLink="/putanja-proizvodi" routerLinkActive="active">
+      <div class="icon">
+        <i class="fa fa-cutlery" aria-hidden="true" style="margin-top: 10px"></i>
+      </div>
+      <p class="navp">MENU</p>
+    </div>
+
+    <div class="navitem" routerLink="/putanja-sastojci" routerLinkActive="active" (isActiveChange)="changeImageSource($event,'storage')" >
+      <div class="icon">
+        <img id="storage" src="{{storageIconSrc}}" style="margin-right:10px;width:20px;">
+      </div>
+      <p class="navp">STORAGE</p>
+    </div>
+
+    <div class="navitem" routerLink="/putanja-radnici" routerLinkActive="active" (isActiveChange)="changeImageSource($event,'employees')">
+      <div class="icon">
+        <img id="employees" src="{{employeesIconSrc}}" style="margin-right:10px;width:23px;">
+      </div>
+      <p class="navp">EMPLOYEES</p>
+    </div>
+
+    <!--  <div class="navitem" routerLink="/putanja-rezervacije">
+       <div class="icon">
+         <i class="fa fa-calendar" aria-hidden="true" style="margin-top: 10px"></i>
+       </div>
+       <p class="navp">RESERVATIONS</p>
+     </div> -->
+
+     <div class="navitem" routerLink="/putanja-kuponi" routerLinkActive="active">
+       <div class="icon">
+       <i class="fa fa-ticket" aria-hidden="true" style="margin-top: 10px"></i>
+       </div>
+       <p class="navp">COUPONS</p>
+     </div>
+
+    <!--  <div class="navitem" routerLink="/putanja-pitanja">
+       <div class="icon">
+         <img src="{{FAQIconSrc2}}"  style="margin-right:8px;width:23px;">
+      </div>
+      <p class="navp">FAQ</p>
+    </div> -->
+
+    <div class="navitem" routerLinkActive="active" routerLink="/putanja-faq" (isActiveChange)="changeImageSource($event,'question')">
+      <div class="icon">
+        <img id="question" src="{{FAQIconSrc}}"  style="margin-right:8px;width:23px;">
+      </div>
+      <p class="navp">FAQ</p>
+    </div>
+
+    <div class="navitem" routerLinkActive="active" routerLink="/putanja-izvjestaji" (isActiveChange)="changeImageSource($event,'salesReports')" >
+      <div class="icon">
+        <img id="salesReports" src="{{salesReportsIconSrc}}"  style="margin-right:8px;width:23px;">
+        <!-- <i class="fa fa-question-circle-o" aria-hidden="true" style="margin-top: 10px"></i> -->
+      </div>
+      <p class="navp">SALES REPORTS</p>
+    </div>
+
+    <!--  <div class="navitem" routerLink="/putanja-uplate">
+       <div class="icon">
+         <i class="fa fa-money" aria-hidden="true"  style="margin-top: 10px" ></i>
+       </div>
+       <p class="navp">PAYMENT</p>
+     </div> -->
+
+     <div class="navitem" routerLinkActive="active" routerLink="/putanja-inspekcije" (isActiveChange)="changeImageSource($event,'inspections')">
+       <div class="icon">
+         <img id="inspections" src="{{inspectionsIconSrc}}"  style="margin-right:8px;width:23px;">
+       </div>
+       <p class="navp">INSPECTIONS</p>
+     </div>
+
+     <div class="navitem" routerLinkActive="active"  routerLink="/putanja-dostave" (isActiveChange)="changeImageSource($event,'deliveries')">
+       <div class="icon">
+         <img id="deliveries" src="{{deliveriesIconSrc}}"  style="margin-right:8px;width:23px;">
+       </div>
+       <p class="navp">DELIVERIES</p>
+     </div>
+
+     <div class="navitem" routerLinkActive="active" routerLink="/putanja-chat" (isActiveChange)="changeImageSource($event,'chat')">
+       <div class="icon">
+         <img id="chat" src="{{chatIconSrc}}"  style="margin-right:8px;width:23px;">
+       </div>
+       <p class="navp">CHAT</p>
+     </div>
+
+   </div>
+ </div>
+
+
+ <div class="main">
+
+   <div class="content">
+     <router-outlet></router-outlet>
+     <div class="mainpart">
+       <router-outlet></router-outlet>
+     </div>
+   </div>
+ </div>
+
+ </body>
+

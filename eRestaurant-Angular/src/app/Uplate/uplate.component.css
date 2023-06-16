@@ -1,0 +1,194 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body{
+  background-color: #FAFAFA;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.upper{
+  display: flex;
+  width: 100%;
+  margin-top: -40px;
+  margin-bottom: 40px;
+}
+.search{
+  display: flex;
+  width: 100%;
+  border: 1px solid #707070;
+  border-radius: 15px;
+  padding-left: 10px;
+  align-items: center;
+  height: 40px;
+  justify-content: space-between;
+}
+.settings{
+  display: flex;
+  padding-left: 20px;
+  padding-right: 20px;
+  width: 30%;
+  color: #707070;
+  justify-content: right;
+  font-size: 23px;
+}
+.settings i:hover{
+  cursor: pointer;
+}
+.settings i{
+  margin-left: 20px;
+}
+
+.searchIcon{
+  margin-left:-35px;
+}
+
+.categories{
+  display: flex;
+  /*margin-top: 40px;*/
+}
+.category{
+  background-color: #BFA290;
+  margin-right: 20px;
+  height: 52px;
+  width: 160px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  border-radius:4px;
+}
+.category:hover{
+  cursor: pointer;
+}
+
+.main{
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+}
+
+.mainpart{
+  width: 70%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin-top: 40px;
+}
+
+.side{
+  width: 30%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.leftPart{
+  display: flex;
+}
+
+.picture{
+  height: 125px;
+  width:125px;
+  border: 1px solid red;
+  border-radius: 25px 25px 25px 25px;
+  margin-right: 10px;
+  padding: 10px;
+}
+
+.text{
+  /*height: 111px;*/
+  display: flex;
+  flex-direction: column;
+}
+.text p,h3{
+  margin: 0;
+  padding: 0;
+}
+
+.button{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 10px;
+  text-align: right;
+}
+#delete{
+  font-size: 20px;
+  margin-right: 10px;
+}
+
+#delete:hover{
+  cursor: pointer;
+}
+
+.insidebutton{
+  background-color: #D2988D;
+  color: white;
+  border: 1px solid #707070;
+  border-radius: 10px 10px 10px 10px;
+  height: 35px;
+  width: 150px;
+}
+
+.insidebutton:hover{
+  cursor: pointer;
+}
+
+.uplata{
+  display: flex;
+  width: 90%;
+  border: 1px solid #707070;
+  border-radius: 25px 25px 25px 25px;
+  justify-content: space-between;
+  background-color: white;
+  color:#707070;
+  margin: 10px;
+  margin-left: 0;
+}
+
+.side{
+  width: 30%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.cuplata{
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.cuplata h4{
+  text-align: center;
+}
+
+.cuplata input{
+  border: 1px solid #707070;
+  border-radius: 4px 4px 4px 4px;
+  height: 30px;
+  padding: 10px;
+}
+
+.submit{
+  height: 40px;
+  padding: 0;
+  margin-top: 20px;
+  border: 1px solid #707070;
+  border-radius: 10px 10px 10px 10px ;
+  background-color: #D2988D;
+  color: white;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.submit:hover{
+  cursor: pointer;
+}
+
+

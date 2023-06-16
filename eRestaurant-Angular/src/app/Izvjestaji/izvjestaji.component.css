@@ -1,0 +1,122 @@
+*{
+  outline:none;
+}
+input:focus, textarea:focus, select:focus{
+  box-shadow: #D2988D 0px 0px 3px 3px;
+}
+button:focus{
+  outline: none;
+}
+body{
+  background-color: #FAFAFA;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.upper{
+  display: flex;
+  width: 100%;
+  margin-top: -40px;
+  margin-bottom: 40px;
+}
+.search{
+  display: flex;
+  width: 100%;
+  border: 1px solid #707070;
+  border-radius: 15px;
+  padding-left: 10px;
+  padding-right:10px;
+  height: 40px;
+}
+.settings{
+  display: flex;
+  padding-left: 20px;
+  padding-right: 20px;
+  width: 30%;
+  color: #707070;
+  justify-content: right;
+  font-size: 23px;
+}
+.settings i:hover{
+  cursor: pointer;
+}
+.settings i{
+  margin-left: 20px;
+}
+.main{
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+}
+
+.mainpart{
+  width: 65.4%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+.report{
+  display:flex;
+  border-bottom: 1px solid #707070;
+  border-top: 1px solid #707070;
+  border-right: 1px solid #707070;
+  width: 100%;
+  border-radius: 4px;
+  margin-top:20px;
+  background-color: #ffffff;
+}
+
+.reportImg{
+  display:flex;
+  width:128px;
+  height:111px;
+  object-fit: cover;
+  border: 1px solid #D2988D;
+  border-radius: 4px;
+}
+.reportInfo{
+  display:flex;
+  flex-direction: column;
+}
+.reportDate{
+  display:flex;
+  color: black;
+  font-weight: 500;
+  margin-top:10px;
+  margin-left:10px;
+}
+.DetailsButtonDiv{
+  display:flex;
+  flex-direction: column;
+  margin-left:auto;
+  margin-right:10px;
+  margin-top:70px;
+  margin-bottom:10px;
+}
+.detailsBtn{
+  background-color: #E3BBB1;
+  border:1px solid #D2988D;
+  border-radius:4px;
+  color: #75504a;
+  cursor:pointer;
+}
+.side{
+  width: 30.7%;
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+  margin-top: 40px;
+  border: 1px solid #707070;
+  height: 100vh;
+  border-radius: 4px;
+  padding: 7px;
+  color: #434343;
+  overflow: auto;
+}
+.sideReportInfo{
+  display:flex;
+  flex-direction: column;
+  justify-items: center;
+  font-size: 14px;
+}

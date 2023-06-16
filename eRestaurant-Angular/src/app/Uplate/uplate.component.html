@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+<div class="upper">
+  <input class="search" placeholder="Search...">
+  <img class="searchIcon" src="assets\Resources\search.svg">
+  <div class="settings">
+    <i class="fa fa-bell" aria-hidden="true" style="margin-top: 10px"></i>
+    <i class="fa fa-cog" aria-hidden="true" style="margin-top: 10px"></i>
+    <i class="fa fa-user-circle" aria-hidden="true" style="margin-top: 10px"></i>
+  </div>
+</div>
+
+<div class="categories">
+  <div class="category" style="margin-right: 40px; background-color: #B88E76; font-weight: bold;">
+    <p>All</p>
+  </div>
+  <div class="category">
+    <p>Cash payment</p>
+  </div>
+  <div class="category">
+    <p>Credit payment</p>
+  </div>
+</div>
+
+<div class="main">
+  <div class="mainpart">
+    <h4 style="margin-bottom: 20px;color: #707070">All payments</h4>
+    <div class="uplata" *ngFor="let x of getpodaci()">
+      <div class="leftPart">
+        <div class="picture">
+          <img src="assets/payment_picture.png" style="width: 108px;height: 100px">
+        </div>
+        <div class="text">
+          <h4 style="font-weight: bold">Payment number {{x.id}} </h4>
+          <p style="font-weight: bold">Amount: {{x.iznosZaUplatu}} $</p>
+          <p>Date: {{x.datum}}</p>
+        </div>
+      </div>
+      <div class="button">
+        <button class="insidebutton" (click)="ViewDetails(x)">View details</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="side">
+    <div class="cuplata">
+      <h4 style="text-align: center;color: #707070">Payment details</h4>
+      <label>Id</label>
+      <input [(ngModel)]="odabrana_uplata.id" disabled>
+      <label>Date:</label>
+      <input [(ngModel)]="odabrana_uplata.datum" disabled>
+      <label>Amount</label>
+      <input [(ngModel)]="odabrana_uplata.iznosZaUplatu"  disabled>
+      <label>Payment method</label>
+      <input [(ngModel)]="odabrana_uplata.nacinPlacanja" disabled>
+      <button class="submit" (click)="Ok()">Ok</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>

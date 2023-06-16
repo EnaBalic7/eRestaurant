@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+<div class="upper">
+  <input class="search" placeholder="Search..." [(ngModel)]="search_by_name" (change)="preuzmi_sastojke()">
+  <img class="searchIcon" src="assets\Resources\search.svg">
+  <div class="settings">
+    <i class="fa fa-bell" aria-hidden="true" style="margin-top: 10px"></i>
+    <i class="fa fa-cog" aria-hidden="true" style="margin-top: 10px"></i>
+    <i class="fa fa-user-circle" aria-hidden="true" style="margin-top: 10px"></i>
+  </div>
+</div>
+<div class="categories">
+
+  <div class="category" style="margin-right: 40px; background-color: #B88E76; font-weight: bold;" (click)="preuzmi_sastojke('All')">
+    <p style="color:white;">All</p>
+  </div>
+
+  <div class="category"  (click)="preuzmi_sastojke('In stock')">
+    <img class="categoryIcon" src="assets\Resources\circle-checked.svg">
+    <p>In stock</p>
+  </div>
+
+  <div class="category"  (click)="preuzmi_sastojke('Out of stock')">
+    <img class="categoryIcon" src="assets\Resources\circle-x.svg">
+    <p>Out of stock</p>
+  </div>
+</div>
+
+<div class="main">
+  <div class="mainpart">
+
+    <div class="ingredient" *ngFor="let x of sastojci_podaci">
+
+      <div class="ingredientLeftDiv">
+      <div class="divImg">
+        <img class="ingredientImg" alt="Ingredient" src="assets\Resources\ingredients.png">
+      </div>
+
+      <div class="ingredientInfo">
+        <label class="ingredientName">{{x.naziv}}</label>
+        <label class="categoryName">{{x.sastojciKategorije.naziv}}</label>
+        <label class="companyInfo">{{x.dobavljac.nazivKompanije + ", " + x.dobavljac.brojTelefona}}</label>
+        </div>
+      </div>
+
+      <div class="ingredientRightDiv">
+        <label *ngIf="x.kolicinaNaStanju>0" class="quantityInStock">{{x.kolicinaNaStanju+" (kg, l)"}}</label>
+        <div *ngIf="x.kolicinaNaStanju==0" class="outOfStockTag">Out of stock</div>
+        <div class = "EditIcons">
+          <i id="EditIcon" class="fa fa-pencil-square-o" aria-hidden="true" (click)="odabrani_sastojak=x;scrollUp()"></i>
+          <i id="DeleteIcon" class="fa fa-trash-o" aria-hidden="true" (click)="sastojak_za_delete=x; deleteActivated=true; promptBg(true)"></i>
+        </div>
+      </div>
+
+    </div>
+    </div>
+
+<div class="side" *ngIf="odabrani_sastojak==null">
+  <label>Name of ingredient:</label>
+  <input (click)="isChangedName=true" type="text" required maxlength="24" [(ngModel)]="novi_sastojak.naziv">
+  <div *ngIf="isChangedName==true && novi_sastojak.naziv==''" class="errorMessage">Ingredient name cannot be empty.</div>
+  <label>Quantity in stock (kg, l):</label>
+  <input (click)="isChangedQty=true" type="number" required [(ngModel)]="novi_sastojak.kolicinaNaStanju">
+  <div *ngIf="isChangedQty==true && (novi_sastojak.kolicinaNaStanju<0 || novi_sastojak.kolicinaNaStanju==null)" class="errorMessage">Quantity in stock cannot be less than zero, nor empty.</div>
+  <label>Category:</label>
+  <select class="form-control" [(ngModel)]="novi_sastojak.sastojciKategorijeID">
+    <option *ngFor="let x of kategorijePodaci" [value]="x.sastojciKategorijeID">{{x.naziv}}</option>
+  </select>
+  <label>Supplier:</label>
+  <select class="form-control" [(ngModel)]="novi_sastojak.dobavljacID">
+    <option *ngFor="let x of dobavljaciPodaci" [value]="x.dobavljacID">{{x.nazivKompanije}}</option>
+  </select>
+  <button class="submitButton" type="submit" [disabled]="novi_sastojak.naziv=='' || novi_sastojak.kolicinaNaStanju<0 || novi_sastojak.kolicinaNaStanju==null " (click)="Add(); newIngredientAdded=true; promptBg(true)">Add ingredient</button>
+</div>
+
+  <div class="side" *ngIf="odabrani_sastojak!=null && order_activated==false">
+    <label>Name of ingredient:</label>
+    <input (click)="isChangedName=true" type="text" required maxlength="24" [(ngModel)]="odabrani_sastojak.naziv">
+    <div *ngIf="isChangedName==true && odabrani_sastojak.naziv==''" class="errorMessage">Ingredient name cannot be empty.</div>
+    <label>Quantity in stock (kg, l):</label>
+    <input (click)="isChangedQty=true" type="number" required [(ngModel)]="odabrani_sastojak.kolicinaNaStanju">
+    <div *ngIf="isChangedQty==true && (odabrani_sastojak.kolicinaNaStanju<0 || odabrani_sastojak.kolicinaNaStanju==null)" class="errorMessage">Quantity in stock cannot be less than zero, nor empty.</div>
+    <label>Category:</label>
+    <select class="form-control" [(ngModel)]="odabrani_sastojak.sastojciKategorijeID">
+      <option *ngFor="let x of kategorijePodaci" [value]="x.sastojciKategorijeID">{{x.naziv}}</option>
+    </select>
+    <label>Supplier:</label>
+    <select class="form-control" [(ngModel)]="odabrani_sastojak.dobavljacID">
+      <option *ngFor="let x of dobavljaciPodaci" [value]="x.dobavljacID">{{x.nazivKompanije}}</option>
+    </select>
+    <div class="AddOrderLabels">
+    <p class="addNewProductLabel" (click)="odabrani_sastojak=null;
+   novi_sastojak.naziv='';
+   novi_sastojak.kolicinaNaStanju=0;
+   novi_sastojak.dobavljacID=2;
+   novi_sastojak.sastojciKategorijeID=3;">Add new ingredient</p>
+    <p id="order" (click)="order_activated=true">Order</p>
+    </div>
+    <button class="submitButton" type="submit" [disabled]="odabrani_sastojak.naziv=='' || odabrani_sastojak.kolicinaNaStanju<0 || odabrani_sastojak.kolicinaNaStanju==null" (click)="Update(); ingredientEdited=true; promptBg(true)">Save</button>
+  </div>
+
+  <div class="side" *ngIf="order_activated==true">
+    <label>Name of ingredient:</label>
+    <input (click)="isChangedName=true" type="text" required maxlength="24" [(ngModel)]="odabrani_sastojak.naziv">
+    <div *ngIf="isChangedName==true && odabrani_sastojak.naziv==''" class="errorMessage">Ingredient name cannot be empty.</div>
+    <label>Quantity to order (kg, l):</label>
+    <input (click)="isChangedQty=true" type="number" required [(ngModel)]="odabrani_sastojak.kolicinaNaStanju">
+    <div *ngIf="isChangedQty==true && odabrani_sastojak.kolicinaNaStanju<=0" class="errorMessage">Order quantity cannot be less or equal to zero, nor empty.</div>
+    <label>Category:</label>
+    <select class="form-control" [(ngModel)]="odabrani_sastojak.sastojciKategorijeID">
+      <option *ngFor="let x of kategorijePodaci" [value]="x.sastojciKategorijeID">{{x.naziv}}</option>
+    </select>
+    <label>Supplier:</label>
+    <select class="form-control" [(ngModel)]="odabrani_sastojak.dobavljac.dobavljacID">
+      <option *ngFor="let x of dobavljaciPodaci" [value]="x.dobavljacID">{{x.nazivKompanije}}</option>
+    </select>
+    <p class="addNewProductLabel" (click)="odabrani_sastojak=null;
+   novi_sastojak.naziv='';
+   novi_sastojak.kolicinaNaStanju=0;
+   novi_sastojak.dobavljacID=2;
+   novi_sastojak.sastojciKategorijeID=3;
+   order_activated=false;">Add new ingredient</p>
+    <button class="submitButton" type="submit" [disabled]="odabrani_sastojak.naziv=='' || odabrani_sastojak.kolicinaNaStanju<=0" (click)="ingredientOrdered=true;promptBg(true)">Order ingredient</button>
+  </div>
+
+</div>
+
+<div id="bg"></div>
+
+<div class="prompt" *ngIf="deleteActivated==true">
+  <div class="promptImg_label">
+    <img class="promptImg" src="assets\Resources\alert-triangle.svg">
+    <label>Are you sure you want to delete this ingredient?</label>
+  </div>
+  <div class="YesNoButtons">
+    <button class="NoBtn" (click)="deleteActivated=false;promptBg(false)">No</button>
+    <button class="YesBtn" (click)="Delete(); deleteActivated=false; promptBg(false)">Yes</button>
+  </div>
+</div>
+
+<div class="prompt" *ngIf="newIngredientAdded==true" >
+  <div class="promptImg_label">
+    <img class="promptImg" src="assets\Resources\check-mark.svg">
+    <label>A new ingredient has been added!</label>
+  </div>
+  <div class="OkButton">
+    <button class="OkBtn" (click)="newIngredientAdded=false;promptBg(false)">Ok</button>
+  </div>
+</div>
+
+<div class="prompt" *ngIf="ingredientEdited==true" >
+  <div class="promptImg_label">
+    <img class="promptImg" src="assets\Resources\check-mark.svg">
+    <label>Ingredient info has been saved!</label>
+  </div>
+  <div class="OkButton">
+    <button class="OkBtn" (click)="ingredientEdited=false;promptBg(false)">Ok</button>
+  </div>
+</div>
+
+<div class="prompt" *ngIf="ingredientOrdered==true" >
+  <div class="promptImg_label">
+    <img class="promptImg" src="assets\Resources\check-mark.svg">
+    <label>Ingredient has been ordered!</label>
+  </div>
+  <div class="OkButton">
+    <button class="OkBtn" (click)="ingredientOrdered=false;promptBg(false)">Ok</button>
+  </div>
+</div>
+
+</body>
+</html>

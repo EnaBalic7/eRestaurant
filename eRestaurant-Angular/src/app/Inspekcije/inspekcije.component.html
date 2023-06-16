@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+
+<div class="upper">
+  <input type="date" class="search" [(ngModel)]="search_date" (change)="preuzmi_inspekcije()">__
+  <input type="date" class="search" [(ngModel)]="search_date2" (change)="preuzmi_inspekcije()">
+  <div class="settings">
+    <i class="fa fa-bell" aria-hidden="true" style="margin-top: 10px"></i>
+    <i class="fa fa-cog" aria-hidden="true" style="margin-top: 10px"></i>
+    <i class="fa fa-user-circle" aria-hidden="true" style="margin-top: 10px"></i>
+  </div>
+</div>
+
+<div class="main">
+  <div class="mainpart">
+
+    <div class="inspection" *ngFor="let x of inspekcijePodaci.dataItems">
+      <div class="divImg">
+        <img class="inspectionImg" alt="Inspection" src="assets\Resources\inspectionsDefaultImg.jpg">
+      </div>
+      <div class="InspectionInfo">
+        <label class="inspectionID">Inspection #{{x.sanitarnaDeratizacijaID}}</label>
+        <label class="contractCode">Contract code: {{x.brojUgovora}}</label>
+        <label class="datePerformed">Performed: {{formatdate(x.datumInspekcije)}}</label>
+
+      </div>
+
+      <div class = "EditIcons">
+        <i id="EditIcon" class="fa fa-pencil-square-o" aria-hidden="true" (click)="odaberi_inspekciju(x);scrollUp()"></i>
+        <i id="DeleteIcon" class="fa fa-trash-o" aria-hidden="true" (click)="odaberi_inspekciju(x);deleteActivated=true;promptBg(true)"></i>
+      </div>
+    </div>
+
+    <br>
+    <nav>
+      <ul class="pages">
+        <li class="pageItem"><a class="pageLink" (click)="goToPrev()">Previous</a></li>
+        <li *ngFor="let p of pageNumbersArray()" class="pageItem" [ngClass]="p == currentPage?'active':''" (click)="goToPage(p)"><button class="pageLink" [ngClass]="p == currentPage?'active':''" >{{p}}</button></li>
+        <li class="pageItem"><a class="pageLink" (click)="goToNext()">Next</a></li>
+      </ul>
+    </nav>
+
+
+
+  </div>
+
+  <div class="side" *ngIf="odabrana_inspekcija==null">
+    <div class="inspectionImgDiv">
+      <img class="defaultImg" alt="InspectionDefaultImg" src="assets\Resources\inspectionsDefaultImg.jpg">
+    </div>
+    <label>Contract code:</label>
+    <input (click)="isChangedCode=true" required type="text" placeholder="xxxx" maxlength="15" [(ngModel)]="novaInspekcijaObj.brojUgovora">
+    <div *ngIf="isChangedCode==true && novaInspekcijaObj.brojUgovora==''" class="errorMessage">Contract code cannot be empty.</div>
+    <label>Date performed:</label>
+    <input (click)="isChangedDatePerf=true" required type="date" [(ngModel)]="novaInspekcijaObj.datumInspekcije">
+    <div *ngIf="isChangedDatePerf==true && novaInspekcijaObj.datumInspekcije==''" class="errorMessage">Date of inspection cannot be empty.</div>
+    <label>Date certified:</label>
+    <input (click)="isChangedDateCert=true" required type="date" [(ngModel)]="novaInspekcijaObj.datumOvjere">
+    <div *ngIf="isChangedDateCert==true && novaInspekcijaObj.datumOvjere==''" class="errorMessage">Date of inspection certification cannot be empty.</div>
+    <label>Additional note:</label>
+    <textarea required placeholder="Write additional note here..." [(ngModel)]="novaInspekcijaObj.dodatnaNapomena"></textarea>
+    <label>Document:</label>
+    <input type="file" id="newPDFID" class="fileUpload" accept="application/pdf" (change)="uploadNewPDF()">
+    <button class="submitButton" type="submit" [disabled]="novaInspekcijaObj.brojUgovora=='' || novaInspekcijaObj.datumInspekcije=='' || novaInspekcijaObj.datumOvjere==''" (click)="addInspekcija()">Add</button>
+  </div>
+
+  <div class="side" *ngIf="odabrana_inspekcija!=null">
+    <div class="inspectionImgDiv">
+      <img class="defaultImg" alt="InspectionDefaultImg" src="assets\Resources\inspectionsDefaultImg.jpg">
+    </div>
+    <label>Contract code:</label>
+    <input (click)="isChangedCode=true"  required type="text" placeholder="xxxx" maxlength="15" [(ngModel)]="odabrana_inspekcija.brojUgovora">
+    <div *ngIf="isChangedCode==true && odabrana_inspekcija.brojUgovora==''" class="errorMessage">Contract code cannot be empty.</div>
+    <label>Date performed:</label>
+    <input (click)="isChangedDatePerf=true" required type="date" [(ngModel)]="odabrana_inspekcija.datumInspekcije">
+    <div *ngIf="isChangedDatePerf==true && odabrana_inspekcija.datumInspekcije==''" class="errorMessage">Date of inspection cannot be empty.</div>
+    <label>Date certified:</label>
+    <input (click)="isChangedDateCert=true" required type="date" [(ngModel)]="odabrana_inspekcija.datumOvjere">
+    <div *ngIf="isChangedDateCert==true && odabrana_inspekcija.datumOvjere==''" class="errorMessage">Date of inspection certification cannot be empty.</div>
+    <label>Additional note:</label>
+    <textarea required placeholder="Write additional note here..." [(ngModel)]="odabrana_inspekcija.dodatnaNapomena"></textarea>
+    <label>Document:</label>
+    <input type="file" id="existingPDFID" class="fileUpload" accept="application/pdf" (change)="replacePDF()" filename="odabrana_inspekcija.pdf">
+    <a *ngIf="odabrana_inspekcija.prilozenPDF==true" [href]="pdfURL+odabrana_inspekcija.sanitarnaDeratizacijaID" target="_blank">Preview PDF</a>
+    <p id="addNewInspectionLabel" (click)="
+   novaInspekcijaObj.brojUgovora='';
+   novaInspekcijaObj.datumInspekcije='';
+   novaInspekcijaObj.datumOvjere='';
+   novaInspekcijaObj.dodatnaNapomena='';
+   novaInspekcijaObj.pdf='';
+   novaInspekcijaObj.prilozenPDF=false;
+   odabrana_inspekcija=null;">Add new inspection</p>
+    <button class="submitButton" type="submit" [disabled]="odabrana_inspekcija.brojUgovora=='' || odabrana_inspekcija.datumInspekcije=='' || odabrana_inspekcija.datumOvjere==''" (click)="updateInspekcija()">Save</button>
+  </div>
+
+</div>
+
+
+<div id="bg"></div>
+
+<div class="prompt"  *ngIf="deleteActivated==true">
+  <div class="promptImg_label">
+    <img class="promptImg" src="assets\Resources\alert-triangle.svg">
+    <label>Are you sure you want to delete this inspection?</label>
+  </div>
+  <div class="YesNoButtons">
+    <button class="NoBtn" (click)="deleteActivated=false;promptBg(false)">No</button>
+    <button class="YesBtn" (click)="deleteInspekcija(); deleteActivated=false;promptBg(false)">Yes</button>
+  </div>
+</div>
+
+<div class="prompt" *ngIf="newInspectionAdded==true" >
+  <div class="promptImg_label">
+    <img class="promptImg" src="assets\Resources\check-mark.svg">
+    <label>A new inspection has been added!</label>
+  </div>
+  <div class="OkButton">
+    <button class="OkBtn" (click)="newInspectionAdded=false;promptBg(false)">Ok</button>
+  </div>
+</div>
+
+<div class="prompt" *ngIf="inspectionEdited==true" >
+  <div class="promptImg_label">
+    <img class="promptImg" src="assets\Resources\check-mark.svg">
+    <label>Inspection info has been saved!</label>
+  </div>
+  <div class="OkButton">
+    <button class="OkBtn" (click)="inspectionEdited=false;promptBg(false)">Ok</button>
+  </div>
+</div>
+
+</body>
+</html>

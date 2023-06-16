@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+<div class="upper">
+  <input class="search" placeholder="Search..." [(ngModel)]="filter_podaci"  (change)="preuzmi_podatke()">
+  <img class="searchIcon" src="assets\Resources\search.svg">
+  <div class="settings">
+    <i class="fa fa-bell" aria-hidden="true" style="margin-top: 10px"></i>
+    <i class="fa fa-cog" aria-hidden="true" style="margin-top: 10px"></i>
+    <i class="fa fa-user-circle" aria-hidden="true" style="margin-top: 10px"></i>
+  </div>
+</div>
+
+<div class="categories">
+
+  <div class="category" style="margin-right: 40px; background-color: #B88E76; font-weight: bold;" (click)="preuzmi_podatke('All')">
+    <p>All</p>
+  </div>
+
+  <div class="category" (click)="preuzmi_podatke('Pending')">
+    <p>Pending</p>
+  </div>
+
+  <div class="category" (click)="preuzmi_podatke('Concluded')">
+    <p>Concluded</p>
+  </div>
+
+</div>
+
+<div class="main">
+<div class="mainpart">
+  <h4 style="margin-bottom: 20px;color: #707070">{{vrsta_rezervacija}}</h4>
+<div *ngFor="let x of getpodaci()" class="rezervacaija">
+  <div class="leftPart">
+    <div class="picture">
+      <img src="assets/table.jpg" style="width: 90px;height: 90px">
+    </div>
+    <div class="text">
+      <h4 style="font-weight: bold">Reservation number {{x.id}}</h4>
+      <p>User ID: {{x.korisnikId}}</p>
+      <p>Table {{x.brojStola}}</p>
+      <p>Seats: {{x.brojOsoba}}</p>
+      <p>{{x.datumRezervacije}}</p>
+    </div>
+  </div>
+  <div class="button">
+    <i id="delete" style="color: red" class="fa fa-trash-o" aria-hidden="true" (click)="Delete(x)"></i>
+    <button class="insidebutton" (click)="odabrana_rezervacija=x">Update</button>
+  </div>
+</div>
+</div>
+<div class="side">
+  <h4 style="text-align: center;color: #707070">Create reservation</h4>
+  <div class="crezervacija" *ngIf="nova_rezervacija!=null">
+    <label>Date of reservation:</label>
+    <input  [(ngModel)]="nova_rezervacija.datumRezervacije" value ="{{danasnji_datum}}">
+    <label>Number of seats:</label>
+      <input [(ngModel)]="nova_rezervacija.brojOsoba">
+    <label>Number of table:</label>
+      <input [(ngModel)]="nova_rezervacija.brojStola">
+    <label>Note:</label>
+    <textarea [(ngModel)]="nova_rezervacija.napomena"></textarea>
+    <input type="submit" id="create" value="Create reservation" (click)="Add()" style="height: 40px;padding: 0">
+  </div>
+
+  <div class="crezervacija" *ngIf="odabrana_rezervacija.id!=null">
+    <h4 style="text-align: center;color: #707070">Update reservation</h4>
+    <label>Id</label>
+    <input  [(ngModel)]="odabrana_rezervacija.id" disabled>
+    <label>Date of reservation:</label>
+    <input  [(ngModel)]="odabrana_rezervacija.datumRezervacije" value ="2022-11-25">
+    <label>Number of seats:</label>
+    <input [(ngModel)]="odabrana_rezervacija.brojOsoba">
+    <label>Number of table:</label>
+    <input [(ngModel)]="odabrana_rezervacija.brojStola">
+    <label>Note:</label>
+    <textarea [(ngModel)]="odabrana_rezervacija.napomena"></textarea>
+    <button class="submit" (click)="Update(odabrana_rezervacija.id)">Update</button>
+
+  </div>
+</div>
+</div>
+</body>
+</html>

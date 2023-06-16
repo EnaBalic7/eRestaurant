@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+<div id="bg"></div>
+
+<div class="upper">
+  <input class="search" placeholder="Search..." [(ngModel)]="search_by_name" (change)="preuzmi_radnike()">
+  <img class="searchIcon" src="assets\Resources\search.svg">
+  <div class="settings">
+    <i class="fa fa-bell" aria-hidden="true" style="margin-top: 10px"></i>
+    <i class="fa fa-cog" aria-hidden="true" style="margin-top: 10px"></i>
+    <i class="fa fa-user-circle" aria-hidden="true" style="margin-top: 10px"></i>
+  </div>
+</div>
+
+<div class="addEmployee">
+  <p>Add employee</p>
+  <div class="addEmployeeIcon" (click)="addNewEmployee=true;promptBg(true)">
+    <img src="assets\Resources\Vector.svg">
+  </div>
+</div>
+
+<div class="mainpart">
+<div class="radnikDiv" *ngFor="let x of radnici_podaci">
+  <div class="radnikimgDiv">
+    <img class="radnikImg" src="assets\Resources\user.png">
+  </div>
+  <div class="radnikInfo">
+    <label class="employeeName">{{x.osoba.ime+' '+x.osoba.prezime}}</label>
+    <label class="employeePosition">{{x.pozicija}}</label>
+    <label class="employeeEmail">{{x.osoba.email}}</label>
+    <label class="employeePhoneNumber">{{x.osoba.brojTelefona}}</label>
+  </div>
+  <div class="timeActive_Edit">
+    <div class="timeActive">
+      <label class="employeePhoneNumber">{{"Time active: "+formatdate(x.datumZaposlenja)+" - "+getEndDate(x)}}</label>
+    </div>
+    <div (click)="odaberiRadnika(x);odaberiZaDelete(x);editEmployee=true;promptBg(true)" class="radnikEditBtn">
+      Edit
+    </div>
+  </div>
+</div>
+</div>
+
+
+<div *ngIf="addNewEmployee==true" class="addEmployeePrompt">
+  <label>First name:</label>
+  <input (click)="isChangedFName=true" required type="text" maxlength="20" [(ngModel)]="novaOsobaObj.ime">
+  <div *ngIf="isChangedFName==true && novaOsobaObj.ime==''" class="errorMessage">First name cannot be empty.</div>
+  <label>Last name:</label>
+  <input (click)="isChangedLName=true" required type="text" maxlength="30" [(ngModel)]="novaOsobaObj.prezime">
+  <div *ngIf="isChangedLName==true && novaOsobaObj.prezime==''" class="errorMessage">Last name cannot be empty.</div>
+  <label>Email:</label>
+  <input (click)="isChangedEmail=true" required type="email" [(ngModel)]="novaOsobaObj.email">
+  <div *ngIf="isChangedEmail==true && novaOsobaObj.email==''" class="errorMessage">Email cannot be empty.</div>
+  <label>Phone:</label>
+  <input (click)="isChangedPhone=true" required type="tel" [(ngModel)]="novaOsobaObj.brojTelefona">
+  <div *ngIf="isChangedPhone==true && novaOsobaObj.brojTelefona==''" class="errorMessage">Phone number cannot be empty.</div>
+  <label>Date of birth:</label>
+  <input (click)="isChangedBirthDate=true" required type="date" [(ngModel)]="novaOsobaObj.datumRodenja">
+  <div *ngIf="isChangedBirthDate==true && novaOsobaObj.datumRodenja==''" class="errorMessage">Birth date cannot be empty.</div>
+
+  <div class="addEmployeePromptButtons">
+  <button class="cancelBtn" (click)="addNewEmployee=false;promptBg(false)">Cancel</button>
+  <button class="nextBtn" (click)="addNewEmployee=false;addNewEmployee2=true"
+  [disabled]="novaOsobaObj.ime=='' || novaOsobaObj.prezime=='' || novaOsobaObj.email=='' || novaOsobaObj.brojTelefona=='' || novaOsobaObj.datumRodenja==''"
+  >Next</button>
+  </div>
+
+</div>
+
+<div *ngIf="addNewEmployee2==true" class="addEmployeePrompt">
+  <label>Vocation:</label>
+  <input required type="text" [(ngModel)]="noviRadnikObj.zvanje">
+  <label>Gender:</label>
+  <select required [(ngModel)]="noviRadnikObj.spol">
+    <option value="F">Female</option>
+    <option value="M">Male</option>
+  </select>
+  <label>JMBG:</label>
+  <input required type="text" [(ngModel)]="noviRadnikObj.jmbg">
+  <label>Job position:</label>
+  <input (click)="isChangedPosition=true" required type="text" [(ngModel)]="noviRadnikObj.pozicija">
+  <div *ngIf="isChangedPosition==true && noviRadnikObj.pozicija==''" class="errorMessage">Job position cannot be empty.</div>
+  <label>Employment date:</label>
+  <input (click)="isChangedEmpDate=true" required type="date" [(ngModel)]="noviRadnikObj.datumZaposlenja">
+  <div *ngIf="isChangedEmpDate==true && noviRadnikObj.datumZaposlenja==''" class="errorMessage">Employment date cannot be empty.</div>
+  <label>Employment end:</label>
+  <input (click)="isChangedFireDate=true" required type="date" [(ngModel)]="noviRadnikObj.datumZavrsetkaRadnogOdnosa">
+  <div *ngIf="isChangedFireDate==true && noviRadnikObj.datumZavrsetkaRadnogOdnosa==''" class="errorMessage">Employment end date cannot be empty.</div>
+
+  <div class="addEmployeePromptButtons">
+    <button class="backBtn" (click)="addNewEmployee2=false;addNewEmployee=true">Back</button>
+    <button class="addBtn" (click)="addNewEmployee2=false;addRadnik()"
+    [disabled]="noviRadnikObj.pozicija=='' || noviRadnikObj.datumZaposlenja=='' || noviRadnikObj.datumZavrsetkaRadnogOdnosa==''"
+    >Add</button>
+  </div>
+
+</div>
+
+
+
+<div *ngIf="editEmployee==true" class="addEmployeePrompt" id="editPrompt1">
+
+  <label>First name:</label>
+  <input (click)="isChangedFName=true" type="text" maxlength="20" [(ngModel)]="odabrana_osoba.ime">
+  <div *ngIf="isChangedFName==true && odabrana_osoba.ime==''" class="errorMessage">First name cannot be empty.</div>
+  <label>Last name:</label>
+  <input (click)="isChangedLName=true" type="text" maxlength="30" [(ngModel)]="odabrana_osoba.prezime">
+  <div *ngIf="isChangedLName==true && odabrana_osoba.prezime==''" class="errorMessage">Last name cannot be empty.</div>
+  <label>Email:</label>
+  <input (click)="isChangedEmail=true" type="email" [(ngModel)]="odabrana_osoba.email">
+  <div *ngIf="isChangedEmail==true && odabrana_osoba.email==''" class="errorMessage">Email cannot be empty.</div>
+  <label>Phone:</label>
+  <input (click)="isChangedPhone=true"  type="tel" [(ngModel)]="odabrana_osoba.brojTelefona">
+  <div *ngIf="isChangedPhone==true && odabrana_osoba.brojTelefona==''" class="errorMessage">Phone number cannot be empty.</div>
+  <label>Date of birth:</label>
+  <input (click)="isChangedBirthDate=true"  type="date" [(ngModel)]="odabrana_osoba.datumRodenja">
+  <div *ngIf="isChangedBirthDate==true && odabrana_osoba.datumRodenja==''" class="errorMessage">Birth date cannot be empty.</div>
+  <p class="deleteLabel" (click)="deleteActivated=true">Delete employee</p>
+  <div class="addEmployeePromptButtons">
+    <button class="cancelBtn" (click)="editEmployee=false;promptBg(false);deselect()">Cancel</button>
+    <button class="nextBtn"  (click)="editEmployee2=true;editEmployee=false"
+            [disabled]="odabrana_osoba.ime=='' || odabrana_osoba.prezime=='' || odabrana_osoba.email=='' || odabrana_osoba.brojTelefona=='' || odabrana_osoba.datumRodenja==''"
+    >Next</button>
+  </div>
+
+</div>
+
+
+<div *ngIf="editEmployee2==true" class="addEmployeePrompt">
+  <label>Vocation:</label>
+  <input type="text" [(ngModel)]="odabrani_radnik.zvanje">
+  <label>Gender:</label>
+  <select [(ngModel)]="odabrani_radnik.spol">
+    <option value="F">Female</option>
+    <option value="M">Male</option>
+  </select>
+  <label>JMBG:</label>
+  <input type="text" [(ngModel)]="odabrani_radnik.jmbg">
+  <label>Job position:</label>
+  <input (click)="isChangedPosition=true"  type="text" [(ngModel)]="odabrani_radnik.pozicija">
+  <div *ngIf="isChangedPosition==true && odabrani_radnik.pozicija==''" class="errorMessage">Job position cannot be empty.</div>
+  <label>Employment date:</label>
+  <input (click)="isChangedEmpDate=true"  type="date" [(ngModel)]="odabrani_radnik.datumZaposlenja">
+  <div *ngIf="isChangedEmpDate==true && odabrani_radnik.datumZaposlenja==''" class="errorMessage">Employment date cannot be empty.</div>
+  <label>Employment end:</label>
+  <input (click)="isChangedFireDate=true"  type="date" [(ngModel)]="odabrani_radnik.datumZavrsetkaRadnogOdnosa">
+  <div *ngIf="isChangedFireDate==true && odabrani_radnik.datumZavrsetkaRadnogOdnosa==''" class="errorMessage">Employment end date cannot be empty.</div>
+
+  <div class="addEmployeePromptButtons">
+    <button class="backBtn" (click)="editEmployee2=false;editEmployee=true">Back</button>
+    <button class="addBtn" (click)="editEmployee=false;editEmployee2=false;updateRadnik()"
+            [disabled]="odabrani_radnik.pozicija=='' || odabrani_radnik.datumZaposlenja=='' || odabrani_radnik.datumZavrsetkaRadnogOdnosa==''"
+    >Save</button>
+  </div>
+
+</div>
+
+<div class="prompt" *ngIf="newEmployeeAdded==true" >
+  <div class="promptImg_label">
+    <img class="promptImg" src="assets\Resources\check-mark.svg">
+    <label>A new employee has been added!</label>
+  </div>
+  <div class="OkButton">
+    <button class="OkBtn" (click)="newEmployeeAdded=false;promptBg(false)">Ok</button>
+  </div>
+</div>
+
+<div class="prompt" *ngIf="employeeEdited==true" >
+  <div class="promptImg_label">
+    <img class="promptImg" src="assets\Resources\check-mark.svg">
+    <label>Employee info has been saved!</label>
+  </div>
+  <div class="OkButton">
+    <button class="OkBtn" (click)="employeeEdited=false;promptBg(false)">Ok</button>
+  </div>
+</div>
+
+<div class="prompt"  *ngIf="deleteActivated==true">
+  <div class="promptImg_label">
+    <img class="promptImg" src="assets\Resources\alert-triangle.svg">
+    <label>Are you sure you want to delete this employee?</label>
+  </div>
+  <div class="YesNoButtons">
+    <button class="NoBtn" (click)="deleteActivated=false">No</button>
+    <button class="YesBtn" (click)="Delete(); deleteActivated=false;editEmployee=false;promptBg(false)">Yes</button>
+  </div>
+</div>
+
+</body>
+</html>
