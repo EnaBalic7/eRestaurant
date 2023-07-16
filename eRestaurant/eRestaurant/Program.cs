@@ -27,9 +27,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-app.UseDefaultFiles();
-app.UseStaticFiles();
+app.UseRouting();
 
 app.UseCors(
     options => options
@@ -39,19 +37,17 @@ app.UseCors(
         .AllowCredentials()
 ); //This needs to set everything allowed
 
-
+app.UseDefaultFiles();
+app.UseStaticFiles();
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers();
-
-app.Run();
-
-app.UseRouting();
 
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapHub<PorukeHub>("/poruke-hub-putanja");
 });
+
+app.MapControllers();
+app.Run();

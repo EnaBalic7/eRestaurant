@@ -12,7 +12,7 @@ export class SignalRProba2Servis{
 
   otvoriKanalWebSocket(){
       this.connection = new signalR.HubConnectionBuilder()
-        .withUrl('http://localhost:5129/poruke-hub-putanja')
+        .withUrl('https://localhost:7129/poruke-hub-putanja')
         .build();
 
     this.connection.on('PosaljiPoruku',(p:string)=>{
